@@ -45,6 +45,7 @@ class SwagLabsWTD(unittest.TestCase):
             logout_btn = self.driver.find_element(by="id", value="logout_sidebar_link")
             assert logout_btn.is_displayed()
             logout_btn.click()
+            assert user_name_input
 
     def test_sort_products_by_price_lohi(self, valid_user=valid_user, valid_password=valid_password):
         try:
