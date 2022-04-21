@@ -53,7 +53,7 @@ class SwagLabsWTD(unittest.TestCase):
         assert logout_btn.is_displayed()
         logout_btn.click()
 
-    def test_sort_products_by_price(self, valid_user=valid_user, valid_password=valid_password):
+    def test_sort_products_by_price_lohi(self, valid_user=valid_user, valid_password=valid_password):
         driver = self.driver
         driver.get("https://www.saucedemo.com/")
         assert "Swag Labs" in driver.title
@@ -68,6 +68,26 @@ class SwagLabsWTD(unittest.TestCase):
             select = Select(driver.find_element(By.CLASS_NAME, "product_sort_container"))
             select.select_by_value("lohi")
             assert "PRICE (LOW TO HIGH)"
+
+    def test_sort_products_by_price_hilo(self, valid_user=valid_user, valid_password=valid_password):
+        driver = self.driver
+        driver.get("https://www.saucedemo.com/")
+        assert "Swag Labs" in driver.title
+        try:
+            user_name_input = driver.find_element(by="name", value="user-name")
+            password_input = driver.find_element(by="name", value="password")
+            user_name_input.send_keys(valid_user)
+            password_input.send_keys(valid_password)
+            password_input.send_keys(Keys.RETURN)
+        finally:
+            # TODO: Select Price from low to high
+            select = Select(driver.find_element(By.CLASS_NAME, "product_sort_container"))
+            select.select_by_value("hilo")
+            assert "PRICE (HIGH TO LOW)"
+
+        # TODO: Add multiple items to the shopping cart
+
+        # TODO: Add the specific product ‘Sauce Labs Onesie’ to the shopping cart
 
     def tearDown(self):
         self.driver.close()
