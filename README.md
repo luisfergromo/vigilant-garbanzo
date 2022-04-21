@@ -1,11 +1,19 @@
 [Instructions ](https://docs.google.com/document/d/17spNl5zlSgUob5A3ntoFYHKoYfQVZ3SABcnIlrTtBCw/edit)
-Date 2022
+
 
 Libraries: Selenium and Unittest
 Required Chrome Webdriver
 
 Commands:
-- Run
-```$ python3 main.py```
 
+``$ pip install selenium``
 
+Optional:
+``$ pip install pytest-html``
+
+- Run test
+``$ python main.py``
+- Run test and create report
+``$ pytest --html=report.html --self-contained-html``
+
+Luis Romo - 2022
