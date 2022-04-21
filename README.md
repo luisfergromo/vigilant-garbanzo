@@ -15,6 +15,6 @@ Optional:
 ``$ python -m unittest``
 - 
 - Run test and create report
-``$ pytest --html=report.html --self-contained-html``
+``$ pytest test.py --html=report.html --self-contained-html``
 
 Luis Romo - 2022
