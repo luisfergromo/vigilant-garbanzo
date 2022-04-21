@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
 
+# TODO: Clean Code.
 class SwagLabsWTD(unittest.TestCase):
     valid_user = "standard_user"
     valid_password = "secret_sauce"
@@ -15,7 +16,6 @@ class SwagLabsWTD(unittest.TestCase):
         self.driver = webdriver.Chrome()
 
     def test_valid_password_and_user(self, valid_user=valid_user, valid_password=valid_password):
-        # TODO: Valid password and user login
         driver = self.driver
         driver.get("https://www.saucedemo.com/")
         assert "Swag Labs" in driver.title
@@ -64,7 +64,6 @@ class SwagLabsWTD(unittest.TestCase):
             password_input.send_keys(valid_password)
             password_input.send_keys(Keys.RETURN)
         finally:
-            # TODO: Select Price from low to high
             select = Select(driver.find_element(By.CLASS_NAME, "product_sort_container"))
             select.select_by_value("lohi")
             assert "PRICE (LOW TO HIGH)"
@@ -80,14 +79,66 @@ class SwagLabsWTD(unittest.TestCase):
             password_input.send_keys(valid_password)
             password_input.send_keys(Keys.RETURN)
         finally:
-            # TODO: Select Price from low to high
             select = Select(driver.find_element(By.CLASS_NAME, "product_sort_container"))
             select.select_by_value("hilo")
             assert "PRICE (HIGH TO LOW)"
 
-        # TODO: Add multiple items to the shopping cart
+    def test_add_multiple_items(self, valid_user=valid_user, valid_password=valid_password):
+        driver = self.driver
+        driver.get("https://www.saucedemo.com/")
+        assert "Swag Labs" in driver.title
+        try:
+            user_name_input = driver.find_element(by="name", value="user-name")
+            password_input = driver.find_element(by="name", value="password")
+            user_name_input.send_keys(valid_user)
+            password_input.send_keys(valid_password)
+            password_input.send_keys(Keys.RETURN)
+        finally:
+            driver.find_element(By.NAME, "add-to-cart-sauce-labs-backpack").click()
+            driver.find_element(By.NAME, "add-to-cart-test.allthethings()-t-shirt-(red)").click()
+            driver.find_element(By.NAME, "add-to-cart-sauce-labs-onesie").click()
+            shop_bag = driver.find_element(By.CLASS_NAME, "shopping_cart_badge")
+            assert shop_bag.text == "3"
 
-        # TODO: Add the specific product ‘Sauce Labs Onesie’ to the shopping cart
+    def test_add_specific_item(self, valid_user=valid_user, valid_password=valid_password):
+        driver = self.driver
+        driver.get("https://www.saucedemo.com/")
+        assert "Swag Labs" in driver.title
+        try:
+            user_name_input = driver.find_element(by="name", value="user-name")
+            password_input = driver.find_element(by="name", value="password")
+            user_name_input.send_keys(valid_user)
+            password_input.send_keys(valid_password)
+            password_input.send_keys(Keys.RETURN)
+        finally:
+            driver.find_element(By.NAME, "add-to-cart-sauce-labs-onesie").click()
+            driver.find_element(By.CLASS_NAME, "shopping_cart_badge").click()
+            inventory_text = driver.find_element(By.CLASS_NAME, "inventory_item_name")
+            assert inventory_text.text == "Sauce Labs Onesie"
+
+    def test_complete_purchase(self, valid_user=valid_user, valid_password=valid_password):
+        driver = self.driver
+        driver.get("https://www.saucedemo.com/")
+        assert "Swag Labs" in driver.title
+        try:
+            user_name_input = driver.find_element(by="name", value="user-name")
+            password_input = driver.find_element(by="name", value="password")
+            user_name_input.send_keys(valid_user)
+            password_input.send_keys(valid_password)
+            password_input.send_keys(Keys.RETURN)
+        finally:
+            driver.find_element(By.NAME, "add-to-cart-sauce-labs-backpack").click()
+            driver.find_element(By.NAME, "add-to-cart-test.allthethings()-t-shirt-(red)").click()
+            driver.find_element(By.NAME, "add-to-cart-sauce-labs-onesie").click()
+            driver.find_element(By.CLASS_NAME, "shopping_cart_badge").click()
+            driver.find_element(by="name", value="checkout").click()
+            driver.find_element(by="name", value="firstName").send_keys("Luis")
+            driver.find_element(by="name", value="lastName").send_keys("Romo")
+            driver.find_element(by="name", value="postalCode").send_keys("45079")
+            driver.find_element(by="name", value="continue").click()
+            driver.find_element(by="name", value="finish").click()
+            final_order = driver.find_element(By.CLASS_NAME, "complete-header")
+            assert final_order.text == "THANK YOU FOR YOUR ORDER"
 
     def tearDown(self):
         self.driver.close()
