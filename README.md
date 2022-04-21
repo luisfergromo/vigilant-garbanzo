@@ -12,7 +12,8 @@ Optional:
 ``$ pip install pytest-html``
 
 - Run test
-``$ python main.py``
+``$ python -m unittest``
+- 
 - Run test and create report
 ``$ pytest --html=report.html --self-contained-html``
 
